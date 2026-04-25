@@ -8,6 +8,7 @@ public class Employee {
 	private String phoneNumber;
 	private String birthDate;
 	private double salary;
+	private String password;
 	private Department department;
 	public Employee() {
 		super();
@@ -59,6 +60,12 @@ public class Employee {
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

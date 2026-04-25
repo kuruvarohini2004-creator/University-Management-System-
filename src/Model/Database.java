@@ -1,0 +1,28 @@
+ package Model;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Database {
+	private String user="root";
+	private String pass="KRohini@2004";
+	private String url="jdbc:mysql://localhost:3306/University-Management-System-"; 
+	private Statement statement;
+	
+	public Database() {
+		try {
+			Connection connection =DriverManager.getConnection(user,url,pass);
+			statement=connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	public Statement getStatement() {
+		return statement;
+	}
+
+}
