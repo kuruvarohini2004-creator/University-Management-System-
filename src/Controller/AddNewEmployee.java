@@ -43,9 +43,24 @@ public class AddNewEmployee implements Operation {
 		}
 		try {
 			ResultSet rs= database.getStatement()
-					.executeQuery("SELECT COUNT(*) FROM 'Employees'; ");
+					.executeQuery("SELECT COUNT(*)AS total FROM employee ");
 			rs.next();
-			int ID=rs.getInt("COUNT(*)");
+			int ID=rs.getInt("total")+1;
+			
+			String insert = "INSERT INTO employee(ID,FirstName,LastName,Email,PhoneNumber,BirthDate,Salary,DepartmentID,Password) VALUES('"
+					+ ID +"','"
+			        + firstName + "','"
+			        + lastName + "','"
+			        + email + "','"
+			        + phoneNumber + "','"
+			        + birthDate + "',"
+			        + salary + ","
+			        + deptID + ",'"
+			        + password + "')";
+
+			database.getStatement().execute(insert);
+			System.out.println("Employee Added Succesfully....");
+			
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();

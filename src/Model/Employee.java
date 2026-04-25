@@ -1,5 +1,8 @@
 package Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Employee {
 	private int ID;
 	private String firstName;
@@ -12,6 +15,29 @@ public class Employee {
 	private Department department;
 	public Employee() {
 		super();
+	}
+	public Employee(int ID,Database database) {
+		try {
+			String select = "SELECT ID, FirstName, LastName, Email, PhoneNumber, "+ " BirthDate , Salary, DepartmentID, Password FROM employee "
+
+		+ "WHERE ID = "+ID+" ;";
+			ResultSet rs = database.getStatement().executeQuery(select);
+			rs.next();
+			setID(ID);
+			setFirstName(rs.getString("FirstName"));
+	        setLastName(rs.getString("LastName"));
+	        setEmail(rs.getString("Email"));
+	        setPhoneNumber(rs.getString("PhoneNumber"));
+	        setBirthDate(rs.getString("BirthDate"));
+	        setSalary(rs.getDouble("Salary"));
+	        setPassword(rs.getString("Password"));
+	        int deptID=rs.getInt("DepartmentID");
+	        setDepartment(new Department(deptID,database));
+			}
+		catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	public int getID() {
 		return ID;
@@ -68,6 +94,18 @@ public class Employee {
 		this.password = password;
 	}
 	
-	
+	public void update(Database database) {
+		
+				try {
+					String update= "UPDATE employee SET FirstName='"+getFirstName()+ "',LastName='"+getLastName()+"',Email='"+getEmail()+"',"
+							+ "PhoneNumber='"+getPhoneNumber()+"',BirthDate='"+getBirthDate()+"',Salary='"+getSalary()+"',"
+									+ "DepartmentID='"+getDepartment().getID()+"',Password='"+getPassword()+"' WHERE ID="+getID()+";";
+					database.getStatement().execute(update);
+					System.out.println("Employee Updated Succesfully...");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
 
 }

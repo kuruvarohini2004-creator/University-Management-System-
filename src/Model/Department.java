@@ -6,6 +6,9 @@ public class Department {
 	public Department() {
 		super();
 	}
+	public Department(int ID,Database database) {
+		
+	}
 	public int getID() {
 		return ID;
 	}
