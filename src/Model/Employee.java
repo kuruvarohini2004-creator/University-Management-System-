@@ -107,5 +107,16 @@ public class Employee {
 					e.printStackTrace();
 				}
 	}
+	public void print() {
+		System.out.println("ID: \t\t"+getID());
+		System.out.println("Name: \t\t"+getFirstName()+" "+getLastName());
+		System.out.println("Email: \t\t"+getEmail());
+		System.out.println("Phone Number: \t"+getPhoneNumber());
+		System.out.println("Birth Date: \t"+getBirthDate());
+		System.out.println("Salary: \t"+getSalary());
+		System.out.println("Department ID: \t"+getDepartment().getTitle());
+		System.out.println("-------------------------------------------\n");
+		
+	}
 
 }

@@ -1,10 +1,11 @@
 package Controller;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Model.Database;
+import Model.Employee;
 import Model.Operation;
 
 public class AddNewEmployee implements Operation {
@@ -42,13 +43,13 @@ public class AddNewEmployee implements Operation {
 			confirmPassword=scanner.next();
 		}
 		try {
-			ResultSet rs= database.getStatement()
-					.executeQuery("SELECT COUNT(*)AS total FROM employee ");
-			rs.next();
-			int ID=rs.getInt("total")+1;
+			ArrayList<Employee> employees=new ShowAllEmployees().getEmployees(database);
+			int ID=0;
+			if(employees.size()!=0) {
+				ID=employees.get(employees.size()-1).getID()+1;
+			}
 			
-			String insert = "INSERT INTO employee(ID,FirstName,LastName,Email,PhoneNumber,BirthDate,Salary,DepartmentID,Password) VALUES('"
-					+ ID +"','"
+			String insert = "INSERT INTO employee(FirstName,LastName,Email,PhoneNumber,BirthDate,Salary,DepartmentID,Password) VALUES('"
 			        + firstName + "','"
 			        + lastName + "','"
 			        + email + "','"
