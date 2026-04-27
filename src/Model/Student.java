@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.SQLException;
+
 public class Student {
 	private int ID;
 	private String firstName;
@@ -7,15 +9,16 @@ public class Student {
 	private String email;
 	private String phoneNumber;
 	private String birthDate;
-	private Class c;
+	private Model.Class c;
+	private String password;
 	public Student() {
 		super();
 	}
 	public int getID() {
 		return ID;
 	}
-	public void setID(int iD) {
-		ID = iD;
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -47,11 +50,31 @@ public class Student {
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
-	public Class getC() {
+	public Class getCurrentClass() {
 		return c;
 	}
-	public void setC(Class c) {
+	public void setClass(Class c) {
 		this.c = c;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+public void create(Database database) {
+	String insert = "INSERT INTO student (FirstName, LastName, Email, PhoneNumber, BirthDate, `Class`, Password) VALUES "
+	        + "('" + firstName + "','" + lastName + "','"
+	        + email + "','" + phoneNumber + "','" + birthDate + "','" + c.getID() + "','" + password + "');";
+	try {
+		database.getStatement().execute(insert);
+		System.out.println("Student Added Successfully...");
+	} catch (SQLException e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
+	}
 }

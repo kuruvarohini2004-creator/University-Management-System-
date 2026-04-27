@@ -1,13 +1,32 @@
 package Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Department {
 	private int ID;
-	private String title;
+	private String name;
 	public Department() {
 		super();
 	}
+	
+	public Department(int iD, String name) {
+		super();
+		ID = iD;
+		this.name = name;
+	}
+
 	public Department(int ID,Database database) {
-		
+		try {
+			String select ="SELECT * FROM departments WHERE ID="+ID+";";
+			ResultSet rs=database.getStatement().executeQuery(select);
+			rs.next();
+			setID(rs.getInt("ID"));
+			setName(rs.getString("Name"));
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	public int getID() {
 		return ID;
@@ -15,12 +34,47 @@ public class Department {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void print() {
+		System.out.println("ID: \t"+getID());
+		System.out.println("Name: \t"+getName());
+		System.out.println("--------------------------\n");
 	}
 	
+	public void create(Database database) {
+		String insert="INSERT INTO departments (ID,Name) VALUES ('"+getID()+"','"+getName()+"'); ";
+		try {
+			database.getStatement().execute(insert);
+			System.out.println("Department Created Successfully..");
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	public void update(Database database) {
+		String update="UPDATE departments SET Name='"+getName()+"'WHERE ID="+getID()+";";
+		try {
+			database.getStatement().execute(update);
+			System.out.println("Department Updated Successfully...");
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	public void delete(Database database) {
+		try {
+			String delete="DELETE FROM departments WHERE ID="+ID+";";
+			database.getStatement().execute(delete);
+			System.out.println("Department Deleted Successfully....");
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 
 }

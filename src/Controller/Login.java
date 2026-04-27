@@ -6,7 +6,7 @@ import Model.Database;
 
 public class Login {
 	public static void main(String[] args) {
-		new AddNewEmployee().oper(new Database(), new Scanner(System.in));
+		new CreateStudent().oper(new Database(), new Scanner(System.in));
 	}
 
 }

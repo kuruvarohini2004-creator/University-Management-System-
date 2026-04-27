@@ -6,6 +6,9 @@ public class Class {
 	public Class() {
 		super();
 	}
+	public Class(int classID,Database database) {
+		
+	}
 	public int getID() {
 		return ID;
 	}

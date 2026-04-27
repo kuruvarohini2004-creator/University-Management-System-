@@ -17,7 +17,7 @@ public class UpdateEmployee implements Operation{
 		System.out.println("ENter User ID(-1 to show all Employees):");
 		int userID=scanner.nextInt();
 		while(userID<0) {
-			new ShowAllEmployees().oper(database, scanner);
+			new ReadEmployees().oper(database, scanner);
 			System.out.println("ENter User ID(-1 to show all Employees):");
 			userID=scanner.nextInt();
 		}
@@ -59,12 +59,12 @@ public class UpdateEmployee implements Operation{
 		}
 		employee.setPassword(password);
      }
-		System.out.println("Enter Department ID (-1 to keep "+employee.getDepartment().getTitle()+")\n:"
+		System.out.println("Enter Department ID (-1 to keep "+employee.getDepartment().getName()+")\n:"
 				+"(-2 to show all departments):");
 		int deptID=scanner.nextInt();
 		if(deptID!=-1) {
 			while (deptID==-2) {
-				new ShowAllEmployees().oper(database, scanner);
+				new ReadEmployees().oper(database, scanner);
 				deptID=scanner.nextInt();
 			}
 			employee.setDepartment(new Department (deptID,database));

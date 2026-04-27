@@ -1,37 +1,41 @@
 package Controller;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import Model.Database;
+import Model.Department;
 import Model.Employee;
 import Model.Operation;
 
-public class AddNewEmployee implements Operation {
+public class CreateEmployee implements Operation {
 
+	Employee e=new Employee();
 	@Override
 	public void oper(Database database, Scanner scanner) {
 		// TODO Auto-generated method stub
 		System.out.println("Enter First Name: ");
-		String firstName =scanner.next();
+		e.setFirstName(scanner.next());
 		System.out.println("Enter Last Name: ");
-		String lastName=scanner.next();
+		e.setLastName(scanner.next());
 		System.out.println("Enter Email: ");
-		String email=scanner.next();
+		e.setEmail(scanner.next());
 		System.out.println("Enter Phone Number: ");
-		String phoneNumber=scanner.next();
+		e.setPhoneNumber(scanner.next());
 		System.out.println("Enter BirthDate: ");
-		String birthDate=scanner.next();
+		e.setBirthDate(scanner.next());
 		System.out.println("Enter Salary: ");
-		double salary=scanner.nextDouble();
+		e.setSalary(scanner.nextDouble());
 		System.out.println("Enter Department ID: ");
 		int deptID=scanner.nextInt();
 		while(deptID<0) {
-			new ShowAllDepartments().oper(database, scanner);
+			new ReadDepartments().oper(database, scanner);
 			System.out.println("Enter Department ID: ");
 			deptID=scanner.nextInt();
 		}
+		
+		e.setDepartment(new Department(deptID, database));
+		
 		System.out.println("Enter Password: ");
 		String password=scanner.next();
 		System.out.println("Confirm Password: ");
@@ -42,30 +46,16 @@ public class AddNewEmployee implements Operation {
 			System.out.println("Confirm Password: ");
 			confirmPassword=scanner.next();
 		}
-		try {
-			ArrayList<Employee> employees=new ShowAllEmployees().getEmployees(database);
-			int ID=0;
-			if(employees.size()!=0) {
-				ID=employees.get(employees.size()-1).getID()+1;
-			}
-			
-			String insert = "INSERT INTO employee(FirstName,LastName,Email,PhoneNumber,BirthDate,Salary,DepartmentID,Password) VALUES('"
-			        + firstName + "','"
-			        + lastName + "','"
-			        + email + "','"
-			        + phoneNumber + "','"
-			        + birthDate + "',"
-			        + salary + ","
-			        + deptID + ",'"
-			        + password + "')";
-
-			database.getStatement().execute(insert);
-			System.out.println("Employee Added Succesfully....");
-			
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		
+		e.setPassword(password);
+		
+		ArrayList<Employee> employees=new ReadEmployees().getEmployees(database);
+		int ID=0;
+		if(employees.size()!=0) {
+			ID=employees.get(employees.size()-1).getID()+1;
 		}
+		e.setID(ID);
+		e.create(database);
 	}
 
 	

@@ -114,9 +114,29 @@ public class Employee {
 		System.out.println("Phone Number: \t"+getPhoneNumber());
 		System.out.println("Birth Date: \t"+getBirthDate());
 		System.out.println("Salary: \t"+getSalary());
-		System.out.println("Department ID: \t"+getDepartment().getTitle());
+		System.out.println("Department ID: \t"+getDepartment().getName());
 		System.out.println("-------------------------------------------\n");
 		
 	}
 
+	public void create(Database database) {
+		try {
+			String insert = "INSERT INTO employee(FirstName,LastName,Email,PhoneNumber,BirthDate,Salary,DepartmentID,Password) VALUES('"
+			        + firstName + "','"
+			        + lastName + "','"
+			        + email + "','"
+			        + phoneNumber + "','"
+			        + birthDate + "',"
+			        + salary + ","
+			        + department.getID() + ",'"
+			        + password + "')";
+
+			database.getStatement().execute(insert);
+			System.out.println("Employee Added Succesfully....");
+			
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 }
