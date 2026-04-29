@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Course {
 	private int ID;
-	private String title;
+	private String name;
 	private Class c;
 	private String description;
 	private int limit;
 	private ArrayList<Student> students;
 	private Employee prof;
+	private Department dept;
+	
 	public Course() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -20,11 +22,11 @@ public class Course {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public Class getCurrentClass() {
 		return c;
@@ -56,6 +58,27 @@ public class Course {
 	public void setProf(Employee prof) {
 		this.prof = prof;
 	}
-	 
+	
+	 public Department getDept() {
+		return dept;
+	}
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
+	 public void print() {
+		 System.out.println("ID: \t\t"+getID());
+		 System.out.println("Name: \t\t"+getName());
+		 System.out.println("Class: \t\t"+getCurrentClass().getName());
+		 System.out.println("Description: \t"+getDescription());
+		 System.out.println("Limit: \t\t"+getLimit());
+		 System.out.println("Prof: \t\tDr."+getProf().getFirstName()+" "+getProf().getLastName());
+		 System.out.println("Department: \t"+getDept().getName());
+		 System.out.println("-----------------------------------------------------------------------\n");
+	 }
+	 public void create(Database database) {
+		 String insert=" ";
+		 String create=" ";
+		 
+	 }
 
 }

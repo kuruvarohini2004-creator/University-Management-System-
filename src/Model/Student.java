@@ -1,5 +1,6 @@
 package Model;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Student {
@@ -13,6 +14,27 @@ public class Student {
 	private String password;
 	public Student() {
 		super();
+	}
+	public Student(int ID,Database database) {
+		this.ID=ID;
+		String select="SELECT * FROM student WHERE ID = "+ID+";";
+		try {
+			ResultSet rs=database.getStatement().executeQuery(select);
+			rs.next();
+			setFirstName(rs.getString("FirstName"));
+			setLastName(rs.getString ("LastName"));
+			setEmail(rs.getString("Email"));
+			setPhoneNumber(rs.getString("PhoneNumber")); 
+			setBirthDate(rs.getString("BirthDate"));
+			setPassword(rs.getString("Password"));
+			setClass(new Class(rs.getInt("Class"),database));
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	public Student(int ID) {
+		this.ID=ID;
 	}
 	public int getID() {
 		return ID;
@@ -63,7 +85,16 @@ public class Student {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public void print() {
+		System.out.println("ID: \t\t"+getID());
+		System.out.println("Name: \t\t"+getFirstName()+" "+getLastName());
+		System.out.println("Email: \t\t"+getEmail());
+		System.out.println("Phone Number: \t"+getPhoneNumber());
+		System.out.println("Birth Date: \t"+getBirthDate());
+		System.out.println("Class: \t\t"+c.getName());
+		System.out.println("-------------------------------------------\n");
+		
+	}
 	
 public void create(Database database) {
 	String insert = "INSERT INTO student (FirstName, LastName, Email, PhoneNumber, BirthDate, `Class`, Password) VALUES "
@@ -77,4 +108,30 @@ public void create(Database database) {
 		e.printStackTrace();
 	}
 	}
+
+    public void update(Database database) {
+    	String update="UPDATE student SET FirstName='"+firstName+"',"
+    			+"LastName='"+lastName+"',Email='"+email+"',"
+    			+"PhoneNumber ='"+phoneNumber+"',BirthDate ='"+birthDate+"',"
+    					+ "Class ='"+c.getID()+"',Password ='"+password+"' "
+    					+"WHERE ID = "+ID+";";
+    
+    try {
+		database.getStatement().execute(update);
+		System.out.println("Student Updated Successfully...");
+	} catch (SQLException e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
+    }
+    public void delete(Database database) {
+    	String delete="DELETE FROM student WHERE ID ="+ID+";";
+    	try {
+			database.getStatement().execute(delete);
+			System.out.println("Student Deleted Successfully...");
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+    }
 }

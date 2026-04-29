@@ -1,5 +1,7 @@
 package Controller;
 import Model.Class;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Model.Database;
@@ -11,8 +13,15 @@ public class CreateStudent implements Operation{
 
 	@Override
 	public void oper(Database database, Scanner scanner) {
-		// TODO Auto-generated method stub
 		Student s=new Student();
+		
+		ArrayList<Student> students=new ReadStudents().getStudents(database);
+		int ID=0;
+		if(ID!=0) {
+			ID=students.get(students.size()-1).getID()+1;
+		}
+		s.setID(ID);
+		
 		System.out.println("Enter First Name: ");
 		s.setFirstName(scanner.next());
 		System.out.println("Enter Last Name: ");
