@@ -22,17 +22,21 @@ public class Employee {
 
 		+ "WHERE ID = "+ID+" ;";
 			ResultSet rs = database.getStatement().executeQuery(select);
-			rs.next();
-			setID(ID);
-			setFirstName(rs.getString("FirstName"));
-	        setLastName(rs.getString("LastName"));
-	        setEmail(rs.getString("Email"));
-	        setPhoneNumber(rs.getString("PhoneNumber"));
-	        setBirthDate(rs.getString("BirthDate"));
-	        setSalary(rs.getDouble("Salary"));
-	        setPassword(rs.getString("Password"));
-	        int deptID=rs.getInt("DepartmentID");
-	        setDepartment(new Department(deptID,database));
+			if (rs.next()) {
+			    setID(ID);
+			    setFirstName(rs.getString("FirstName"));
+			    setLastName(rs.getString("LastName"));
+			    setEmail(rs.getString("Email"));
+			    setPhoneNumber(rs.getString("PhoneNumber"));
+			    setBirthDate(rs.getString("BirthDate"));
+			    setSalary(rs.getDouble("Salary"));
+			    setPassword(rs.getString("Password"));
+
+			    int deptID = rs.getInt("DepartmentID");
+			    setDepartment(new Department(deptID, database));
+			} else {
+			    throw new RuntimeException("❌ Invalid Employee ID: " + ID);
+			}
 			}
 		catch (SQLException e) {
 			// TODO: handle exception

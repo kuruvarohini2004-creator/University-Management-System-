@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import Model.Course;
 import Model.Database;
-import Model.Department;
 import Model.Employee;
 import Model.Operation;
 import Model.Class;
@@ -26,7 +25,6 @@ public class ReadCourses implements Operation{
 		ArrayList<Course> courses =new ArrayList<>();
 		ArrayList<Integer> classes =new ArrayList<>();
 		ArrayList<Integer> profs =new ArrayList<>();
-		ArrayList<Integer> departments =new ArrayList<>();
 
 
 		String select =" SELECT * FROM courses ;";
@@ -40,7 +38,6 @@ public class ReadCourses implements Operation{
 				c.setDescription(rs.getString("Description"));
 				c.setLimit(rs.getInt("Limit"));
 				profs.add(rs.getInt("Prof"));
-				departments.add(rs.getInt("Department"));
 				courses.add(c);
 			}
 		} catch (SQLException e) {
@@ -50,7 +47,6 @@ public class ReadCourses implements Operation{
 		for(int i=0;i<courses.size();i++) {
 			courses.get(i).setClass(new Class(classes.get(i),database));
 			courses.get(i).setProf(new Employee(profs.get(i),database));
-			courses.get(i).setDept(new Department(departments.get(i), database));
 
 		}
 		return courses;

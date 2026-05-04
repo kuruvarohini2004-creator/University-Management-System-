@@ -20,9 +20,12 @@ public class Department {
 		try {
 			String select ="SELECT * FROM departments WHERE ID="+ID+";";
 			ResultSet rs=database.getStatement().executeQuery(select);
-			rs.next();
-			setID(rs.getInt("ID"));
-			setName(rs.getString("Name"));
+			if (rs.next()) {
+	            setID(rs.getInt("ID"));
+	            setName(rs.getString("Name"));
+	        } else {
+	            throw new RuntimeException("❌ No Department found with ID: " + ID);
+	        }
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();

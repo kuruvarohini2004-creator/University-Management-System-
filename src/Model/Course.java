@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Course {
@@ -16,6 +18,41 @@ public class Course {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Course(int ID,Database database) {
+		setID(ID);
+		String select1="select * from courses where ID="+ID+";";
+		String select2="select * from courses "+ID+";";
+		try {
+			ResultSet rs1=database.getStatement().executeQuery(select1);
+			rs1.next();
+			setName(rs1.getString("Name"));
+			int classID=rs1.getInt("Class");
+			setDescription(rs1.getString("Description"));
+			setLimit(rs1.getInt("Limit"));
+			int profID=rs1.getInt("Prof");
+			
+			setClass(new Class(classID,database));
+			setProf(new Employee(profID,database));
+			
+			ResultSet rs2=database.getStatement().executeQuery(select2);
+			ArrayList<Integer> studentIDs=new ArrayList<>();
+			ArrayList<Student> student =new ArrayList<>();
+
+			while(rs2.next()) {
+				studentIDs.add(rs2.getInt("Student"));
+			}
+			for(Integer i: studentIDs) {
+				students.add(new Student(i,database));
+				
+			}
+			setStudents(student);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	public int getID() {
 		return ID;
 	}
@@ -72,13 +109,22 @@ public class Course {
 		 System.out.println("Description: \t"+getDescription());
 		 System.out.println("Limit: \t\t"+getLimit());
 		 System.out.println("Prof: \t\tDr."+getProf().getFirstName()+" "+getProf().getLastName());
-		 System.out.println("Department: \t"+getDept().getName());
 		 System.out.println("-----------------------------------------------------------------------\n");
 	 }
 	 public void create(Database database) {
-		 String insert=" ";
-		 String create=" ";
+		 String insert="INSERT INTO courses(ID,Name,Class,Description,`Limit`,Prof) VALUES "
+		 		+ "('"+getID()+"','"+getName()+"','"+getCurrentClass().getID()+
+		 		"','"+getDescription()+"','"+getLimit()+"','"+getProf().getID()+"');";
+		 String create="CREATE TABLE `course  "+getID()+"` (student int);";
+		 try {
+				database.getStatement().execute(insert);
+				database.getStatement().execute(create);
+
+				System.out.println("Course Created Successfully...");
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		 
 	 }
-
 }

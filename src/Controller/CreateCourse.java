@@ -42,14 +42,26 @@ public class CreateCourse implements Operation{
 		System.out.println("Enter Course Limit (int): ");
 		c.setLimit(scanner.nextInt());
 		
-		System.out.println("ENter Prof ID (-1 to show all employees):");
-		int employeeID=scanner.nextInt();
-		while(employeeID<0) {
-			new ReadEmployees().oper(database, scanner);
-			System.out.println("ENter Prof ID (-1 to show all employees):");
-			employeeID=scanner.nextInt();
+		Employee emp = null;
+
+		while (true) {
+		    System.out.println("Enter Prof ID (-1 to show all employees):");
+		    int employeeID = scanner.nextInt();
+
+		    if (employeeID == -1) {
+		        new ReadEmployees().oper(database, scanner);
+		        continue;
+		    }
+
+		    try {
+		        emp = new Employee(employeeID, database);
+		        break; // ✅ valid ID → exit loop
+		    } catch (Exception e) {
+		        System.out.println("❌ Invalid Employee ID. Try again.");
+		    }
 		}
-		c.setProf(new Employee(employeeID,database));
+
+		c.setProf(emp);
 		
 		System.out.println("Enter Department ID (-1 to show all departments):");
 		int deptID=scanner.nextInt();
@@ -62,6 +74,5 @@ public class CreateCourse implements Operation{
 		
 		c.create(database);
 	}
-	
 
 }
