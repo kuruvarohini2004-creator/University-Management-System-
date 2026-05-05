@@ -22,35 +22,48 @@ public class Course {
 	public Course(int ID,Database database) {
 		setID(ID);
 		String select1="select * from courses where ID="+ID+";";
-		String select2="select * from courses "+ID+";";
+		String select2="select * from `course_"+ID+"`;";
 		try {
 			ResultSet rs1=database.getStatement().executeQuery(select1);
-			rs1.next();
-			setName(rs1.getString("Name"));
-			int classID=rs1.getInt("Class");
-			setDescription(rs1.getString("Description"));
-			setLimit(rs1.getInt("Limit"));
-			int profID=rs1.getInt("Prof");
-			
-			setClass(new Class(classID,database));
-			setProf(new Employee(profID,database));
-			
-			ResultSet rs2=database.getStatement().executeQuery(select2);
-			ArrayList<Integer> studentIDs=new ArrayList<>();
-			ArrayList<Student> student =new ArrayList<>();
-
-			while(rs2.next()) {
-				studentIDs.add(rs2.getInt("Student"));
+			if(rs1.next()) {
+				
+				setName(rs1.getString("Name"));
+				int classID=rs1.getInt("Class");
+				setDescription(rs1.getString("Description"));
+				setLimit(rs1.getInt("Limit"));
+				int profID=rs1.getInt("Prof");
+				
+				setClass(new Class(classID,database));
+				setProf(new Employee(profID,database));
 			}
-			for(Integer i: studentIDs) {
-				students.add(new Student(i,database));
+			
+			try {
+				ResultSet rs2=database.getStatement().executeQuery(select2);
+				ArrayList<Integer> studentIDs=new ArrayList<>();
+				ArrayList<Student> students =new ArrayList<>();
+
+				while(rs2.next()) {
+					studentIDs.add(rs2.getInt("Student"));
+				}
+				for(Integer i: studentIDs) {
+					students.add(new Student(i,database));
+					
+				}
 				
 			}
-			setStudents(student);
+		catch (Exception e) {
+			// TODO: handle exception
+			setStudents(students);
+		}
+		
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	public Course(int ID) {
+		this.ID=ID;
 	}
 	
 	public int getID() {
@@ -115,7 +128,7 @@ public class Course {
 		 String insert="INSERT INTO courses(ID,Name,Class,Description,`Limit`,Prof) VALUES "
 		 		+ "('"+getID()+"','"+getName()+"','"+getCurrentClass().getID()+
 		 		"','"+getDescription()+"','"+getLimit()+"','"+getProf().getID()+"');";
-		 String create="CREATE TABLE `course  "+getID()+"` (student int);";
+		 String create="CREATE TABLE `course_"+getID()+"` (student int);";
 		 try {
 				database.getStatement().execute(insert);
 				database.getStatement().execute(create);
@@ -124,7 +137,33 @@ public class Course {
 			} catch (SQLException e) {
 				// TODO: handle exception
 				e.printStackTrace();
-			}
-		 
+			} 
 	 }
+	 public void update(Database database) {
+		 String update="update courses set Name='"+getName()+"',"
+				 +"Class="+getCurrentClass().getID()+","
+				 +"Description='"+getDescription()+"',"
+				 +"`Limit`="+getLimit()+","+"Prof="+getProf().getID()+" "
+				 +"where ID="+getID()+";";
+		 try {
+				database.getStatement().execute(update);
+				System.out.println("Course Updated Successfully...");
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+	 }
+	 public void  delete(Database  database) {
+		 String delete="delete from courses where ID="+getID()+";";
+		 String drop="drop table `course_"+getID()+"`(student int);";
+		 try {
+				database.getStatement().execute(delete);
+				database.getStatement().execute(drop);
+				System.out.println("Course Deleted Successfully...");
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+	 }
+	 
 }

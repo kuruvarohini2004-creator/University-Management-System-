@@ -2,6 +2,28 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
+
+import Controller.CreateClass;
+import Controller.CreateCourse;
+import Controller.CreateDepartment;
+import Controller.CreateEmployee;
+import Controller.CreateStudent;
+import Controller.DeleteClass;
+import Controller.DeleteCourse;
+import Controller.DeleteDepartment;
+import Controller.DeleteEmployee;
+import Controller.DeleteStudent;
+import Controller.ReadClasses;
+import Controller.ReadCourses;
+import Controller.ReadDepartments;
+import Controller.ReadEmployees;
+import Controller.ReadStudents;
+import Controller.UpdateClass;
+import Controller.UpdateCourse;
+import Controller.UpdateDepartment;
+import Controller.UpdateEmployee;
+import Controller.UpdateStudent;
 
 public class Employee {
 	private int ID;
@@ -18,7 +40,8 @@ public class Employee {
 	}
 	public Employee(int ID,Database database) {
 		try {
-			String select = "SELECT ID, FirstName, LastName, Email, PhoneNumber, "+ " BirthDate , Salary, DepartmentID, Password FROM employee "
+			String select = "SELECT ID, FirstName, LastName, Email, PhoneNumber, "
+		+ " BirthDate , Salary, DepartmentID, Password FROM employee "
 
 		+ "WHERE ID = "+ID+" ;";
 			ResultSet rs = database.getStatement().executeQuery(select);
@@ -143,4 +166,95 @@ public class Employee {
 			e.printStackTrace();
 		}
 	}
+	private Operation[] managerOperations=null;
+	private Operation[] getManagerOperations() {
+			if (managerOperations==null) {
+				managerOperations=new Operation[] {
+						new CreateDepartment(),
+						new ReadDepartments(),
+						new UpdateDepartment(),
+						new DeleteDepartment(),
+						new CreateClass(),
+						new ReadClasses(),
+						new UpdateClass(),
+						new DeleteClass(),
+						new CreateCourse(),
+						new ReadCourses(),
+						new UpdateCourse(),
+						new DeleteCourse(),
+						new CreateEmployee(),
+						new ReadEmployees(),
+						new UpdateEmployee(),
+						new DeleteEmployee(),
+						new CreateStudent(),
+						new ReadStudents(),
+						new UpdateStudent(),
+						new DeleteStudent()
+				};
+			}
+			return managerOperations;
+			
+	};
+	 public void showList(Database database,Scanner scanner) {
+		 boolean running =true;
+		 while(running) {
+			 if (department.getName().equals("Management")) {
+				 System.out.println("\n-------------------------------");
+				System.out.println("1. Add new Department");
+				System.out.println("2. Show all departments");
+				System.out.println("3. Edit Department");
+				System.out.println("4. Delete Department");
+				System.out.println("5. Add New Class");
+				System.out.println("6. Show all Classes");
+				System.out.println("7. Edit Class");
+				System.out.println("8. Delete Class");
+				System.out.println("9. Add new Course");
+				System.out.println("10. Show all Course");
+				System.out.println("11. Edit Class");
+				System.out.println("12. Delete Course");
+				System.out.println("13. Add new Employee");
+				System.out.println("14. Show all Employees");
+				System.out.println("15. Edit Employee");
+				System.out.println("16. Delete Employee");
+				System.out.println("17. Add new Student");
+				System.out.println("18. Show all Studnets");
+				System.out.println("19. Edit Student");
+				System.out.println("20. Delete Student");
+				System.out.println("---------------------------------\n");
+				
+			System.out.println("Enter Choice: ");
+			int selected=scanner.nextInt();
+			
+			if(selected==0) {
+				running =false;
+				System.out.println("Logged out successfully!");
+			}
+			else if(selected>=1&&selected<=20){
+				managerOperations[selected-1].oper(database, scanner);
+			} else {
+				System.out.println("Invalid Choice. Please try again.");
+			}
+		}else {
+			System.out.println("\n-------------------------------");
+			System.out.println("1. Read Departments");
+			System.out.println("2. Read Classes");
+			System.out.println("3. Read Courses");
+			System.out.println("4. Add Course Grades");
+			System.out.println("5. Show Course Grades");
+			System.out.println("6. Edit Course Grades");
+			System.out.println("7. Delete Course Grades");
+			System.out.println("0. Logout");
+			System.out.println("-------------------------------\n");
+			System.out.println("Enter Choice: ");
+			int selected=scanner.nextInt();
+			if(selected==0) {
+				running=false;
+				System.out.println("Logged out successfully!");
+			}else {
+				System.out.println("Feature not yet implemented.");
+			}
+		}
+	    	
+	 }
+	 }
 }

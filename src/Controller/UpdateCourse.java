@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import Model.Course;
 import Model.Database;
+import Model.Employee;
 import Model.Operation;
 import Model.Class;
 
@@ -49,15 +50,17 @@ public class UpdateCourse implements Operation{
 		
 		scanner.nextLine();
 		System.out.println("Enter Prof ID (-1 to keep DR."+c.getProf().getFirstName()
-				+" "+c.getProf().getLastName()+")\n(-1 to show all employees):");
+				+" "+c.getProf().getLastName()+")\n(-2 to show all employees):");
 		int profID=scanner.nextInt();
 		if(profID!=1) {
 			while(profID<0) {
 				new ReadEmployees().oper(database, scanner);
-				System.out.println("Enter Prof ID (-1 to show all employees):");
+				System.out.println("Enter Prof ID (-2 to show all employees):");
 				profID=scanner.nextInt();
 			}
+			c.setProf(new Employee(profID,database));
 		}
+		c.update(database);
 	}
 
 }

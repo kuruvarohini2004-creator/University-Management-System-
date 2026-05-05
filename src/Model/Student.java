@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Student {
 	private int ID;
@@ -19,15 +20,20 @@ public class Student {
 		this.ID=ID;
 		String select="SELECT * FROM student WHERE ID = "+ID+";";
 		try {
-			ResultSet rs=database.getStatement().executeQuery(select);
-			rs.next();
-			setFirstName(rs.getString("FirstName"));
-			setLastName(rs.getString ("LastName"));
-			setEmail(rs.getString("Email"));
-			setPhoneNumber(rs.getString("PhoneNumber")); 
-			setBirthDate(rs.getString("BirthDate"));
-			setPassword(rs.getString("Password"));
-			setClass(new Class(rs.getInt("Class"),database));
+			ResultSet rs = database.getStatement().executeQuery(select);
+			if (rs.next()) {  // ✓ Check if row exists BEFORE accessing
+				setFirstName(rs.getString("FirstName"));
+				setLastName(rs.getString("LastName"));
+				setEmail(rs.getString("Email"));
+				setPhoneNumber(rs.getString("PhoneNumber"));
+				setBirthDate(rs.getString("BirthDate"));
+				setPassword(rs.getString("Password"));
+				
+				int classID = rs.getInt("Class");
+				setClass(new Class(classID, database));
+			} else {
+				throw new RuntimeException("❌ Invalid Student ID: " + ID);
+			}
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -133,5 +139,8 @@ public void create(Database database) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+    }
+    public void showList(Database database,Scanner scanner) {
+    	System.out.println("Welcome Student");
     }
 }

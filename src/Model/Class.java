@@ -13,9 +13,12 @@ public class Class {
 		this.ID=ID;
 		String select ="SELECT * FROM classes WHERE ID="+ID+";";
 		try {
-			ResultSet rs=database.getStatement().executeQuery(select);
-			rs.next();
-			setName(rs.getString("Name"));
+			ResultSet rs = database.getStatement().executeQuery(select);
+			if (rs.next()) {  // ✓ Check if row exists BEFORE accessing
+				setName(rs.getString("Name"));
+			} else {
+				throw new RuntimeException("❌ Invalid Class ID: " + ID);
+			}
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
